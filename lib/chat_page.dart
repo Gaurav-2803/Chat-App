@@ -44,6 +44,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final username = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -69,17 +70,16 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: ListView.builder(
-                itemCount: _messages.length,
-                itemBuilder: (context, index) {
-                  return ChatBubble(
-                      align: _messages[index].author.userName == 'gaurav'
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      entity: _messages[index],
-                      boxColor: _messages[index].author.userName == 'gaurav'
-                          ? Colors.blueGrey
-                          : Colors.red.shade300);
-                }),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                return ChatBubble(
+                  align: _messages[index].author.userName == 'gaurav'
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  entity: _messages[index],
+                );
+              },
+            ),
           ),
           ChatInput(onSubmit: onMsgSent)
         ],
