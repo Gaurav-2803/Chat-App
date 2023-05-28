@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:chat_app/models/chat_msg_entity.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:chat_app/widgets/chat_input.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
   ChatPage({super.key});
@@ -15,7 +17,6 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<ChatMsgEntity> _messages = [];
-
   _loadMsgs() async {
     rootBundle.loadString('assets/mock_msg.json').then((response) {
       final List<dynamic> decodedList = jsonDecode(response) as List;
@@ -73,7 +74,8 @@ class _ChatPageState extends State<ChatPage> {
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 return ChatBubble(
-                  align: _messages[index].author.userName == 'gaurav'
+                  align: _messages[index].author.userName ==
+                          context.read<AuthService>().getUsername()
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
                   entity: _messages[index],
