@@ -19,7 +19,6 @@ class ImagePicker extends StatelessWidget {
               return GestureDetector(
                   onTap: () {
                     imageSelected(snapshot.data![index].smallSize);
-                    
                   },
                   child: Image.network(snapshot.data![index].smallSize));
             },
@@ -28,6 +27,11 @@ class ImagePicker extends StatelessWidget {
               mainAxisSpacing: 2,
               maxCrossAxisExtent: MediaQuery.of(context).size.width * 0.5,
             ),
+          );
+        } else if (snapshot.hasError) {
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text('This is an Error : ${snapshot.error}'),
           );
         }
         return const Padding(
