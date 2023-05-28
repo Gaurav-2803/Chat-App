@@ -18,12 +18,13 @@ class _ChatInputState extends State<ChatInput> {
   final chat_msg_controller = TextEditingController();
   String _selectedImgUrl = '';
 
-  void send_btn_press() {
+  void send_btn_press() async {
+    String? userNameFromCache = await context.read<AuthService>().getUsername();
     final new_msg = ChatMsgEntity(
       text: chat_msg_controller.text,
       id: "123",
       timeStamp: DateTime.now().microsecondsSinceEpoch,
-      author: Author(userName: context.read<AuthService>().getUsername()),
+      author: Author(userName: userNameFromCache!),
     );
     if (_selectedImgUrl.isNotEmpty) {
       new_msg.imageUrl = _selectedImgUrl;

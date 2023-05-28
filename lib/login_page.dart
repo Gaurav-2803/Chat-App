@@ -1,7 +1,9 @@
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/spaces.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'widgets/login_txt_form.dart';
 
@@ -14,11 +16,12 @@ class LoginPage extends StatelessWidget {
   final user_name_controller = TextEditingController();
   final password_controller = TextEditingController();
 
-  void login_user(context) {
+  Future<void> login_user(BuildContext context) async {
     if (_form_key.currentState != null && _form_key.currentState!.validate()) {
       if (kDebugMode) {
         print(user_name_controller.text);
         print(password_controller.text);
+        await context.read<AuthService>().loginUser(user_name_controller.text);
         Navigator.pushReplacementNamed(
           context,
           '/chat',
@@ -111,8 +114,8 @@ class LoginPage extends StatelessWidget {
               ),
               verticalSpacing(24),
               ElevatedButton(
-                onPressed: () {
-                  login_user(context);
+                onPressed: () async {
+                  await login_user(context);
                 },
                 child: const Text(
                   'Login',
