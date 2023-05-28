@@ -1,8 +1,5 @@
 import 'dart:convert';
-
 import 'package:chat_app/models/chat_msg_entity.dart';
-import 'package:chat_app/models/images_models.dart';
-import 'package:chat_app/repo/images_repo.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:chat_app/widgets/chat_input.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +19,6 @@ class _ChatPageState extends State<ChatPage> {
   _loadMsgs() async {
     rootBundle.loadString('assets/mock_msg.json').then((response) {
       final List<dynamic> decodedList = jsonDecode(response) as List;
-
       final List<ChatMsgEntity> _chatmsg = decodedList.map((Listitem) {
         return ChatMsgEntity.fromJson(Listitem);
       }).toList();
@@ -37,8 +33,6 @@ class _ChatPageState extends State<ChatPage> {
     _messages.add(entity);
     setState(() {});
   }
-
-  final ImageRepo imgRepo = ImageRepo();
 
   @override
   void initState() {
@@ -73,16 +67,6 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          FutureBuilder<List<PixelImages>>(
-            future: imgRepo.getNetworkImages(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<PixelImages>> snapshot) {
-              if (snapshot.hasData) {
-                return Image.network(snapshot.data![0].smallSize);
-              }
-              return CircularProgressIndicator();
-            },
-          ),
           Expanded(
             child: ListView.builder(
                 itemCount: _messages.length,

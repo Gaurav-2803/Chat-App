@@ -1,6 +1,6 @@
 import 'package:chat_app/models/chat_msg_entity.dart';
 import 'package:chat_app/widgets/counter.dart';
-import 'package:flutter/foundation.dart';
+import 'package:chat_app/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 
 class ChatInput extends StatelessWidget {
@@ -32,7 +32,13 @@ class ChatInput extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ImagePicker();
+                  });
+            },
             icon: const Icon(Icons.add),
             color: Colors.white,
           ),
