@@ -36,6 +36,147 @@ class LoginPage extends StatelessWidget {
     }
   }
 
+  Widget _buildHeader(context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Let's Sign You In",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 25,
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.4,
+          ),
+        ),
+        verticalSpacing(12),
+        const Text(
+          textAlign: TextAlign.center,
+          "Welcome Back!\nYou've been missed :)",
+          style: TextStyle(
+            fontSize: 25,
+            color: Colors.lightBlue,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
+        ),
+        verticalSpacing(24),
+        Image.asset(
+          "assets/atc_logo.jpg",
+          height: 200,
+          width: 200,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildForm(context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Form(
+          key: _form_key,
+          child: Column(
+            children: [
+              verticalSpacing(24),
+              txt_form_field(
+                validator: (value) {
+                  if (value != null && value.isNotEmpty && value.length < 6) {
+                    return "Wrong Username";
+                  } else if (value != null && value.isEmpty) {
+                    return "No Username";
+                  }
+                  return null;
+                },
+                controller: user_name_controller,
+                hintText: "Type your Username",
+              ),
+              verticalSpacing(24),
+              txt_form_field(
+                validator: (value) {
+                  if (value != null && value.isNotEmpty && value.length < 6) {
+                    return "Password length invalid";
+                  } else if (value != null && value.isEmpty) {
+                    return "No Password";
+                  }
+                  return null;
+                },
+                controller: password_controller,
+                hintText: "Type your Password",
+                obscureTxt: true,
+              ),
+            ],
+          ),
+        ),
+        verticalSpacing(24),
+        ElevatedButton(
+          onPressed: () async {
+            await login_user(context);
+          },
+          child: const Text(
+            'Login',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+          ),
+        ),
+        verticalSpacing(12),
+        InkWell(
+          splashColor: Colors.blue,
+          onTap: () async {
+            if (kDebugMode) {
+              print("Forgot Single Tap");
+            }
+          },
+          child: const Text(
+            "Forgot Password",
+            style: TextStyle(fontSize: 15),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooter() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        verticalSpacing(12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FlutterSocialButton(
+              onTap: () async {
+                if (!await launchUrl(
+                  _githubUrl,
+                  mode: LaunchMode.externalApplication,
+                )) {
+                  throw Exception('Could not launch this url!');
+                }
+              },
+              mini: true,
+              buttonType: ButtonType.github,
+            ),
+            horizontalSpacing(24),
+            FlutterSocialButton(
+              onTap: () async {
+                if (!await launchUrl(
+                  _linkedinUrl,
+                  mode: LaunchMode.externalApplication,
+                )) {
+                  throw Exception('Could not launch this url!');
+                }
+              },
+              mini: true,
+              buttonType: ButtonType.linkedin,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,132 +184,43 @@ class LoginPage extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(40.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                "Let's Sign You In",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.4,
-                ),
-              ),
-              verticalSpacing(12),
-              const Text(
-                textAlign: TextAlign.center,
-                "Welcome Back!\nYou've been missed :)",
-                style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.lightBlue,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              verticalSpacing(24),
-              Image.asset(
-                "assets/atc_logo.jpg",
-                height: 200,
-                width: 200,
-              ),
-              Form(
-                key: _form_key,
-                child: Column(
-                  children: [
-                    verticalSpacing(24),
-                    txt_form_field(
-                      validator: (value) {
-                        if (value != null &&
-                            value.isNotEmpty &&
-                            value.length < 6) {
-                          return "Wrong Username";
-                        } else if (value != null && value.isEmpty) {
-                          return "No Username";
-                        }
-                        return null;
-                      },
-                      controller: user_name_controller,
-                      hintText: "Type your Username",
-                    ),
-                    verticalSpacing(24),
-                    txt_form_field(
-                      validator: (value) {
-                        if (value != null &&
-                            value.isNotEmpty &&
-                            value.length < 6) {
-                          return "Password length invalid";
-                        } else if (value != null && value.isEmpty) {
-                          return "No Password";
-                        }
-                        return null;
-                      },
-                      controller: password_controller,
-                      hintText: "Type your Password",
-                      obscureTxt: true,
-                    ),
-                  ],
-                ),
-              ),
-              verticalSpacing(24),
-              ElevatedButton(
-                onPressed: () async {
-                  await login_user(context);
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-                ),
-              ),
-              verticalSpacing(12),
-              InkWell(
-                splashColor: Colors.blue,
-                onTap: () async {
-                  if (kDebugMode) {
-                    print("Forgot Single Tap");
-                  }
-                },
-                child: const Text(
-                  "Forgot Password",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              verticalSpacing(24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
+            if (constraints.maxWidth > 1000) {
+              return Row(
                 children: [
-                  FlutterSocialButton(
-                    onTap: () async {
-                      if (!await launchUrl(
-                        _githubUrl,
-                        mode: LaunchMode.externalApplication,
-                      )) {
-                        throw Exception('Could not launch this url!');
-                      }
-                    },
-                    mini: true,
-                    buttonType: ButtonType.github,
+                  const Spacer(
+                    flex: 1,
                   ),
-                  horizontalSpacing(24),
-                  FlutterSocialButton(
-                    onTap: () async {
-                      if (!await launchUrl(
-                        _linkedinUrl,
-                        mode: LaunchMode.externalApplication,
-                      )) {
-                        throw Exception('Could not launch this url!');
-                      }
-                    },
-                    mini: true,
-                    buttonType: ButtonType.linkedin,
+                  Expanded(
+                    child: Column(
+                      children: [
+                        _buildHeader(context),
+                        _buildForm(context),
+                      ],
+                    ),
+                  ),
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: _buildForm(context),
+                  ),
+                  const Spacer(
+                    flex: 1,
                   ),
                 ],
-              ),
-            ],
-          ),
+              );
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildHeader(context),
+                _buildForm(context),
+                _buildFooter(),
+              ],
+            );
+          }),
         ),
       ),
     );

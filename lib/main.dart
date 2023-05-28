@@ -34,11 +34,14 @@ class ChatApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData && snapshot.data!) {
               return ChatPage();
+            } else {
+              return LoginPage();
             }
-          } else {
-            return LoginPage();
           }
-          return CircularProgressIndicator();
+          return const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
         },
       ),
       // home: const msg_send_counter(),
